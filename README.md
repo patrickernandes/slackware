@@ -3,6 +3,7 @@
 This is a minimal packages to install and use Slackware64-14.2 linux:  
 You can create tagfiles for make fast install..  
 
+```
 aaa_base  
 aaa_elflibs  
 aaa_terminfo  
@@ -58,6 +59,6 @@ util-linux
 wget  
 which  
 xz  
-
+```
 
 The installation will occupy a space of approximately 750MB.
