@@ -1,7 +1,7 @@
 # slackware
 
-This is a minimal packages to install and use slackware: 
-You can create tagfiles for make fasta install.. 
+This is a minimal packages to install and use slackware:  
+You can create tagfiles for make fasta install..  
 
 aaa_base
 aaa_elflibs
