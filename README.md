@@ -62,3 +62,6 @@ xz
 ```
 
 The installation will occupy a space of approximately 750MB.
+For contact: patrickernandes@gmail.com
+
+Thanks..
