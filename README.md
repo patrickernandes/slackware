@@ -62,6 +62,7 @@ xz
 ```
 
 The installation will occupy a space of approximately 750MB.  
+After installation, you can use slackpkg to update the system and install the packages as needed.  
 For contact: patrickernandes@gmail.com
 
 Thanks..
