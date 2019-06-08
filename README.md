@@ -68,7 +68,7 @@ For contact: patrickernandes@gmail.com
 Thanks..  
 +--------------------------+
 
-For Slackware64-current, the future 15.0, I'm testing with the packages below: 
+For Slackware64-current, the future 15.0. I'm testing with the packages below: 
  
 ```
 a/
@@ -121,17 +121,17 @@ util-linux
 which
 xz
 
-ap\
+ap/
 diffutils
 slackpkg
 
-l\
+l/
 libpsl
 libunistring
 ncurses
 pcre2
 
-n\
+n/
 dhcpcd  
 gnupg  
 iputils
