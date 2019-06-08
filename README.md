@@ -65,7 +65,7 @@ The installation will occupy a space of approximately 750MB.
 After installation, you can use slackpkg to update the system and install the packages as needed.  
 For contact: patrickernandes@gmail.com
 
-Thanks..
+Thanks..  
 +--------------------------+
 
 For Slackware64-current, the future 15.0, I'm testing with the packages below: 
