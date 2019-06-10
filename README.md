@@ -134,8 +134,8 @@ pcre2
 n/
 dhcpcd  
 gnupg  
-iputils
 iproute2
+iputils
 libmnl
 net-tools  
 network-scripts  
