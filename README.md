@@ -105,6 +105,7 @@ less
 libgudev
 lilo
 openssl-solibs
+pam
 pciutils
 pkgtools
 procps-ng
