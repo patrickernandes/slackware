@@ -81,6 +81,7 @@ bash
 bin
 bzip2
 coreutils
+cracklib
 dbus
 dcron
 devs
@@ -103,6 +104,7 @@ kernel-modules
 kmod
 less
 libgudev
+libpwquality
 lilo
 openssl-solibs
 pam
@@ -127,7 +129,9 @@ diffutils
 slackpkg
 
 l/
+ConsoleKit2
 libpsl
+libtirpc
 libunistring
 ncurses
 pcre2
