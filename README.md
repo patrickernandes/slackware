@@ -1,4 +1,32 @@
-# slackware
+# slack2iso
+
+This script converts your Slackware Linux installation into an ISO image to start using a "livecd" system, which can be via pendrive or cdrom.
+
+## Installation
+
+**Use slack2iso only with root!**
+
+```
+chmod +x slack2iso.sh
+```
+
+## Options:
+
+- **-help**: Display help.
+- **-clean**: Clean the work folder.
+- **-create**: Create the iso image.
+
+## Example:
+
+```
+./slack2iso.sh -create
+```
+
+**!** All necessary folders and files, including the ISO image will be created in the "/iso" work folder.
+
+
+
+# Slackware minimal install
 
 This is a minimal packages to install and use Slackware64-14.2 linux:  
 You can create tagfiles for make fast install..  
