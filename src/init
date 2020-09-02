@@ -8,7 +8,7 @@
 # written by Alexander E. Patrakov and Jeremy Huntwork.
 # Adapted by Emmett1 to use with Venom Linux
 # Font: https://github.com/emmett1
-# Adapted by Patrick Ernandes for EnaresOS and used on Slackware Linux.
+# Adapted by Patrick Ernandes for EnaresOS, used for create my personal version of Slackware Linux.
 # Mail: patrickernandes@gmail.com
 # 
 #
@@ -23,13 +23,11 @@ msg() {
     echo ":: $@"
 }
 
-
 problem() {
     echo "Encountered a problem!"
     echo "Dropping you to a shell."
     /bin/sh
 }
-
 
 no_device() {
     echo "The device $1, which is supposed to contain the"
@@ -47,7 +45,6 @@ no_mount() {
     echo
     echo "Available partitions:"
 }
-
 
 findmedia() {
     msg "Finding media..."
