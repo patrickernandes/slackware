@@ -23,10 +23,10 @@ chmod +x slack2iso.sh
 ```
 
 **!** All necessary folders and files, including the ISO image will be created in the "/iso" work folder.  
-**!** Not UEFI support.
-
-
-
+**!** Not UEFI support.  
+**!** Make a backup before! :)  
+  
+   
 # Slackware minimal install
 
 This is a minimal packages to install and use Slackware64-14.2 linux:  
