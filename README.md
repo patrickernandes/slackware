@@ -24,7 +24,8 @@ chmod +x slack2iso.sh
 
 ### Some considerations:
 
-- All necessary folders and files, including the ISO image will be created in the "/iso" work folder.  
+- All necessary folders and files, including the ISO image will be created in the "/iso" work folder.
+- Your Slackware must be installed on a single partition. 
 - Not UEFI support.  
 - Make a backup before! :)  
   
