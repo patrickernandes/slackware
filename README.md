@@ -22,9 +22,9 @@ chmod +x slack2iso.sh
 ./slack2iso.sh -create
 ```
 
-**!** All necessary folders and files, including the ISO image will be created in the "/iso" work folder.
+**!** All necessary folders and files, including the ISO image will be created in the "/iso" work folder.  
 **!** Not UEFI support.
-<br>
+
 
 
 # Slackware minimal install
