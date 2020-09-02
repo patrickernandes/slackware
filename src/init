@@ -1,0 +1,190 @@
+#!/bin/ash
+#
+#
+# /init:  init script to load kernel modules from an initramfs
+#         This requires that your kernel supports initramfs!!!
+#
+# This file based in part on the mkinitramfs script for the LFS LiveCD
+# written by Alexander E. Patrakov and Jeremy Huntwork.
+# Adapted by Emmett1 to use with Venom Linux
+# Font: https://github.com/emmett1
+# Adapted by Patrick Ernandes for EnaresOS and used on Slackware Linux.
+# Mail: patrickernandes@gmail.com
+# 
+#
+#
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+export PATH
+
+
+msg() {
+    [ "$verbose" = 1  ] || return
+    echo ":: $@"
+}
+
+
+problem() {
+    echo "Encountered a problem!"
+    echo "Dropping you to a shell."
+    /bin/sh
+}
+
+
+no_device() {
+    echo "The device $1, which is supposed to contain the"
+    echo "root file system, does not exist."
+    echo "Please fix this problem and exit this shell."
+}
+
+no_mount() {
+    echo "Could not mount device $1"
+    echo "Sleeping forever. Please reboot and fix the kernel command line."
+    echo
+    echo "Maybe the device is formatted with an unsupported file system?"
+    echo "Or maybe filesystem type autodetection went wrong, in which case"
+    echo "you should add the rootfstype=... parameter to the kernel command line."
+    echo
+    echo "Available partitions:"
+}
+
+
+findmedia() {
+    msg "Finding media..."
+    for device in /dev/sd* /dev/sr*; do
+        [ -b $device ] || continue
+        msg "Find in $device..."
+    mount -o ro $device $MEDIUM &>/dev/null && \
+    if [ -f $MEDIUM/isolinux/live ]; then
+        msg "Media found: $device"
+        MEDIA=$device
+        break
+    else
+        umount $MEDIUM
+    fi
+    done
+}
+
+msg "Starting initrd..."
+
+init=/sbin/init
+root=
+rootdelay=
+rootfstype=auto
+ro="ro"
+rootflags=
+device=
+shell=
+verbose=
+live=
+delay=5
+ROOT=/.root
+
+msg "Mounting pseudo filesystem..."
+mount -n -t devtmpfs devtmpfs /dev
+mount -n -t proc     proc     /proc
+mount -n -t sysfs    sysfs    /sys
+mount -n -t tmpfs    tmpfs    /run
+
+read -r cmdline < /proc/cmdline
+
+for param in $cmdline ; do
+    case $param in
+        init=*      ) init=${param#init=}             ;;
+        root=*      ) root=${param#root=}             ;;
+        rootdelay=* ) rootdelay=${param#rootdelay=}   ;;
+        rootfstype=*) rootfstype=${param#rootfstype=} ;;
+        rootflags=* ) rootflags=${param#rootflags=}   ;;
+        ro          ) ro="ro"                         ;;
+        rw          ) ro="rw"                         ;;
+        shell       ) shell=1                         ;;
+        verbose     ) verbose=1                       ;;
+        delay       ) delay=${param#delay=}           ;;
+    esac
+done
+
+msg "Starting eudev..."
+/sbin/udevd --daemon --resolve-names=never
+/sbin/udevadm trigger --subsystem-match=block --action=add
+/sbin/udevadm settle
+
+if [ -n "$rootdelay"    ] ; then sleep "$rootdelay" ; fi
+
+for i in mptbase mptscsih mptspi jbd2 mbcache ext4 \
+    overlay xhci-pci xhci-hcd ehci-hcd nls_iso8859_1 \
+    uhci-hcd uas sr_mod usb-storage loop \
+    squashfs isofs vfat fat nls_cp437; do
+    /sbin/modprobe $i 2>/dev/null
+done
+
+if [ "$shell" = 1 ]; then
+    msg "shell mode requested"
+    msg "you've been dropped to shell."
+    /bin/sh
+fi
+
+# if root not set means its livecd
+if [ "$root" = "" ]; then
+    MEDIUM=/medium
+    SYSTEM=/system
+    mkdir $MEDIUM
+    mkdir $SYSTEM
+    findmedia
+    if [ "$MEDIA" = "" ]; then
+    msg "Media not found, will try again in $delay seconds..."
+    sleep $delay
+    findmedia
+    if [ "$MEDIA" = "" ]; then
+        msg "Media still not found!"
+        msg "you've been dropped to shell."
+        problem
+    fi
+    fi
+    msg "Mounting root.sfs to $SYSTEM..."
+    mount -t squashfs -o ro,loop $MEDIUM/live/root.sfs $SYSTEM || problem
+
+    # overlayfs mount
+    WRITEDIR=/os/write
+    WORKDIR=/os/work
+    mkdir /os
+    mount -t tmpfs -o rw tmpfs /os
+    mkdir $WRITEDIR
+    mkdir $WORKDIR
+    mkdir $ROOT
+
+    msg "Mounting overlays to $ROOT..."
+    mount -t overlay overlay -o upperdir=$WRITEDIR,lowerdir=$SYSTEM,workdir=$WORKDIR $ROOT || problem
+
+    #remove lilo alert from rc.S. Add # front lines:
+    sed -i '288,298s/^/#/' $ROOT/etc/rc.d/rc.S
+
+    #rename line to alert can't mount /:
+    sed -i 's,/sbin/mount -f -w /,#/sbin/mount -f -w /,g' $ROOT/etc/rc.d/rc.S
+
+    #create fstab file:
+    echo "# <file system> <mount point> <type> <options> <dump> <pass>" > $ROOT/etc/fstab
+    echo "#" >> $ROOT/etc/fstab
+    echo "proc          /proc           proc        defaults         0   0" >> $ROOT/etc/fstab
+    echo "devtmpfs      /dev            devtmpfs    mode=0755,nosuid 0   0" >> $ROOT/etc/fstab
+    echo "devpts        /dev/pts        devpts      gid=5,mode=620   0   0" >> $ROOT/etc/fstab
+    echo "tmpfs         /dev/shm        tmpfs       defaults         0   0" >> $ROOT/etc/fstab
+
+    # Move mounted squashfs file to new root
+    mkdir $ROOT/lib/initramfs
+    mkdir $ROOT/lib/initramfs$SYSTEM
+    mkdir $ROOT/lib/initramfs$MEDIUM
+    mount --move $SYSTEM $ROOT/lib/initramfs$SYSTEM
+    mount --move $MEDIUM $ROOT/lib/initramfs$MEDIUM
+else
+    problem
+fi
+
+# UDEV:
+[ "$MEDIA" ] && msg "Stopping eudev..."
+#killall -w udevd
+/sbin/udevadm info --cleanup-db
+/sbin/udevadm control --exit
+
+[ "$MEDIA" ] && msg "Switching root to $ROOT..."
+exec switch_root $ROOT "$init" "$@"
+
