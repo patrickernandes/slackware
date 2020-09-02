@@ -4,7 +4,7 @@ This script converts your Slackware Linux installation into an ISO image to star
 
 ### Installation:  
 
-**You should only run slack2iso as root!**  
+You should only run slack2iso as **root!**  
 
 ```
 chmod +x slack2iso.sh
