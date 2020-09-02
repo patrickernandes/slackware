@@ -22,10 +22,11 @@ chmod +x slack2iso.sh
 ./slack2iso.sh -create
 ```
 
-**!** All necessary folders and files will be created in the "/iso" work folder.
+**!** All necessary folders and files, including the ISO image will be created in the "/iso" work folder.
 
 
-# slackware
+
+# Slackware minimal install
 
 This is a minimal packages to install and use Slackware64-14.2 linux:  
 You can create tagfiles for make fast install..  
