@@ -181,4 +181,5 @@ openssh
 wget
 ```
 
-Note, the installation with these packages does not support efi. 
+Note, the installation with these packages does not support efi.   
+Slackware64-current download link: https://bear.alienbase.nl/mirrors/slackware/slackware64-current-iso  
