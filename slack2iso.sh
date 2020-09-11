@@ -15,25 +15,26 @@
 
 
 #VARS:
-VER='20200910'
 LOG='/iso/log.txt'
 OPT=$1
 KERNEL=$(uname -r)
 ROOTDEV=$(findmnt -n / | awk '{print $2}')
 OS=$(grep '^VERSION_CODENAME' /etc/os-release | cut -d '=' -f 2 | sed 's/"//g')
 ISONAME='Slack Linux'
-ISOFILE='linux.iso'
+ISOFILE='slack.iso'
 
 
 #FUNCTIONS:
 quit() {
     
+    #sair do script:
     [ $? -ne 0 ] && { clear; exit; }
 }
 
 
 is_root() {
 
+    #verifica se você é usuário root:
     if [ "$EUID" -ne 0 ]; then
         echo "ERROR - Somente executar como super usuario; como root!"
         echo
@@ -44,6 +45,7 @@ is_root() {
 
 help() {
     
+    #apresentar ajuda:
     cat <<EOF
 ================ AJUDA ================
 -help      -> menu de ajuda.
@@ -58,6 +60,7 @@ EOF
 
 clean() {
 
+    #limpeza do ambiente de trabalho:
     if mountpoint -q /iso/chroot
     then
         umount -f /iso/chroot
@@ -143,15 +146,17 @@ create() {
     cp /usr/share/syslinux/menu.c32 .
     cp /usr/share/syslinux/reboot.c32 .
     for i in {efiboot.img,iso.sort,isolinux.bin}; do
-        wget --timeout=2 --waitretry=1 --tries=3 -c  https://mirrors.slackware.com/slackware/slackware64-current/isolinux/$i
+        wget --timeout=2 --waitretry=1 --tries=3 -c https://mirrors.slackware.com/slackware/slackware64-current/isolinux/$i
     done        
     cd ..
     
     if [ -f /iso/$ISOFILE ]; then 
         rm /iso/$ISOFILE
     fi
-    #cd media
+
+    #criar o arquivo iso:
     mkisofs -o /iso/$ISOFILE -R -J -A "$ISONAME" -hide-rr-moved -v -d -N -no-emul-boot -boot-load-size 4 -boot-info-table -sort isolinux/iso.sort -b isolinux/isolinux.bin -c isolinux/isolinux.boot -V "Linux" .
+
     cd ..
 
     popd &>/dev/null  #volta da pasta inicial.
