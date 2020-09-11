@@ -105,7 +105,7 @@ Thanks..
 For Slackware64-current, the future 15.0. I'm testing with the packages below: 
  
 ```
-#a
+#a:
 aaa_base
 aaa_elflibs
 aaa_terminfo
@@ -158,11 +158,11 @@ util-linux
 which
 xz
 
-#ap
+#ap:
 diffutils
 slackpkg
 
-#l
+#l:
 ConsoleKit2
 libpsl
 libtirpc
@@ -170,7 +170,7 @@ libunistring
 ncurses
 pcre2
 
-#n
+#n:
 dhcpcd  
 gnupg  
 iproute2
