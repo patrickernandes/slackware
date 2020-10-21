@@ -164,6 +164,7 @@ slackpkg
 
 #l:
 ConsoleKit2
+libnsl
 libpsl
 libtirpc
 libunistring
