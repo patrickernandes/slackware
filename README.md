@@ -130,13 +130,14 @@ slackpkg
 
 #l:
 ConsoleKit2
+glib2
 libnsl
-libnss_nis
 libpsl
 libtirpc
 libunistring
 ncurses
 pcre2
+polkit
 
 #n:
 dhcpcd  
