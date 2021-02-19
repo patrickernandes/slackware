@@ -73,8 +73,8 @@ For Slackware64-current, the future 15.0. I'm testing with the packages below:
 ```
 #a:
 aaa_base
-aaa_elflibs
-aaa_terminfo
+aaa_glibc-solibs
+aaa_libraries
 acl
 attr
 bash
@@ -87,12 +87,12 @@ dcron
 devs
 dialog
 e2fsprogs
+elogind
 elvis
 etc
 eudev
 findutils
 gawk
-glibc-solibs
 gptfdisk
 grep
 gzip
@@ -114,10 +114,11 @@ procps-ng
 sed
 shadow
 sharutils
-sysvinit
-sysvinit-scripts
 sysklogd
 syslinux
+sysvinit
+sysvinit-functions
+sysvinit-scripts
 tar
 usbutils
 util-linux
@@ -129,14 +130,13 @@ diffutils
 slackpkg
 
 #l:
-ConsoleKit2
 glib2
 libnsl
+libpcap
 libpsl
-libtirpc
 libunistring
 ncurses
-pcre2
+pcre
 polkit
 
 #n:
