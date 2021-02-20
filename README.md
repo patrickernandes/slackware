@@ -91,6 +91,7 @@ elogind
 elvis
 etc
 eudev
+file
 findutils
 gawk
 gptfdisk
